@@ -1,0 +1,24 @@
+--// Variables
+
+local Players = game:GetService("Players")
+local OldNameCall = nil
+
+--// Global Variables
+
+getgenv().SendNotifications = true -- Set to true if you want to get notified regularly.
+
+--// Anti Kick Hook
+
+OldNameCall = hookmetamethod(game, "__namecall", function(Self, ...)
+    local NameCallMethod = getnamecallmethod()
+
+    if tostring(string.lower(NameCallMethod)) == "kick" then
+        if getgenv().SendNotifications == true then
+            print("Blocked: Kick")
+        end
+        
+        return nil
+    end
+    
+    return OldNameCall(Self, ...)
+end)
